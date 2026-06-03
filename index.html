@@ -18,35 +18,35 @@
       loadSidebar: true,
       subMaxLevel: 3,
       auto2top: true,
-      // 自定义侧边栏菜单，路径使用 #/ 哈希格式
+      // 使用 Markdown 字符串定义侧边栏
       sidebar: {
-        '/': [
-          { title: '🏠 首页' },
-          { title: '📚 裂缝系列', children: [
-            { title: '系列总览', path: '#/lie-feng/index.md' },
-            { title: '总目录', path: '#/lie-feng/contents.md' },
-            { title: '试读章节', path: '#/lie-feng/trial.md' },
-            { title: '卷一：理论基石', path: '#/lie-feng/volume1.md' }
-          ]},
-          { title: '🌏 天下神祇', children: [
-            { title: '系列总览', path: '#/tianxia-shenzhi/index.md' },
-            { title: '试读章节', path: '#/tianxia-shenzhi/trial.md' },
-            { title: '卷一：创世之章', path: '#/tianxia-shenzhi/volume1.md' }
-          ]},
-          { title: '📖 思想简史', children: [
-            { title: '系列总览', path: '#/sixiang-jianshi/index.md' },
-            { title: '试读章节', path: '#/sixiang-jianshi/trial.md' },
-            { title: '第一章：时间的开端', path: '#/sixiang-jianshi/volume1.md' }
-          ]},
-          { title: '📝 人间卧龙凤雏', children: [
-            { title: '系列总览', path: '#/long-feng-chu/index.md' },
-            { title: '试读章节', path: '#/long-feng-chu/trial.md' },
-            { title: '第一集', path: '#/long-feng-chu/volume1.md' }
-          ]},
-          { title: '👤 关于作者', children: [
-            { title: '个人介绍', path: '#/about.md' }
-          ]}
-        ]
+        '/': `
+- **🏠 首页**
+
+- **📚 裂缝系列**
+  - [系列总览](#/lie-feng/index.md)
+  - [总目录](#/lie-feng/contents.md)
+  - [试读章节](#/lie-feng/trial.md)
+  - [卷一：理论基石](#/lie-feng/volume1.md)
+
+- **🌏 天下神祇**
+  - [系列总览](#/tianxia-shenzhi/index.md)
+  - [试读章节](#/tianxia-shenzhi/trial.md)
+  - [卷一：创世之章](#/tianxia-shenzhi/volume1.md)
+
+- **📖 思想简史**
+  - [系列总览](#/sixiang-jianshi/index.md)
+  - [试读章节](#/sixiang-jianshi/trial.md)
+  - [第一章：时间的开端](#/sixiang-jianshi/volume1.md)
+
+- **📝 人间卧龙凤雏**
+  - [系列总览](#/long-feng-chu/index.md)
+  - [试读章节](#/long-feng-chu/trial.md)
+  - [第一集](#/long-feng-chu/volume1.md)
+
+- **👤 关于作者**
+  - [个人介绍](#/about.md)
+        `
       }
     };
   </script>
