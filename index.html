@@ -8,9 +8,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #fff; color: #333; }
     a { text-decoration: none; color: #2c3e50; }
-    /* 桌面端布局 */
     .wrapper { display: flex; height: 100vh; }
-    /* 左侧导航 */
     nav {
       width: 260px; background: #f8f9fa; border-right: 1px solid #e9ecef;
       overflow-y: auto; flex-shrink: 0; padding: 20px 0;
@@ -34,18 +32,15 @@
     }
     nav a:hover { background: #e9ecef; color: #000; }
     nav a.active { background: #e2e6ea; font-weight: bold; color: #000; }
-    /* 手机端菜单按钮 */
     .menu-btn {
       display: none; position: fixed; top: 10px; left: 10px; z-index: 200;
       background: #fff; border: 1px solid #ccc; padding: 8px 14px; border-radius: 6px;
       font-size: 1em; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
-    /* 手机端遮罩 */
     .overlay {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0,0,0,0.3); z-index: 90;
     }
-    /* 右侧内容区 */
     main {
       flex: 1; padding: 40px; overflow-y: auto; line-height: 1.7;
       max-width: 800px; margin: 0 auto;
@@ -59,20 +54,18 @@
     main hr { border: none; border-top: 1px solid #eee; margin: 2em 0; }
     main a { color: #1a73e8; text-decoration: underline; }
     footer { margin-top: 2em; color: #999; font-size: 0.85em; border-top: 1px solid #eee; padding-top: 15px; }
-    /* 版权保护 */
     body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
-    /* 手机端适配 */
     @media (max-width: 768px) {
       .wrapper { flex-direction: column; }
       nav {
         position: fixed; top: 0; left: 0; height: 100%; width: 260px;
-        transform: translateX(-100%); /* 默认隐藏 */
+        transform: translateX(-100%);
         box-shadow: 2px 0 8px rgba(0,0,0,0.1);
       }
       nav.open { transform: translateX(0); }
       .menu-btn { display: block; }
       .overlay.open { display: block; }
-      main { padding: 20px; margin-top: 60px; } /* 给顶部菜单按钮留空间 */
+      main { padding: 20px; margin-top: 60px; }
     }
   </style>
   <script>
@@ -132,7 +125,6 @@
   </div>
 
   <script>
-    // 手机菜单开关
     function toggleMenu() {
       const nav = document.getElementById('navbar');
       const overlay = document.querySelector('.overlay');
@@ -140,7 +132,6 @@
       overlay.classList.toggle('open');
     }
 
-    // 点击菜单项后自动关闭手机导航
     document.querySelectorAll('nav a').forEach(link => {
       link.addEventListener('click', function() {
         if (window.innerWidth <= 768) {
@@ -149,7 +140,6 @@
       });
     });
 
-    // Markdown 渲染
     function simpleMarkdown(md) {
       if (!md) return '';
       let html = md;
@@ -176,7 +166,13 @@
         const res = await fetch(file);
         if (!res.ok) throw new Error('文件未找到');
         const text = await res.text();
-        const html = simpleMarkdown(text);
+        let html;
+        // 如果文件名是 about.md，内容直接用，不进行 Markdown 转换
+        if (file.endsWith('about.md')) {
+          html = text;
+        } else {
+          html = simpleMarkdown(text);
+        }
         document.getElementById('content').innerHTML = html + '<footer>© 2026 朱晓宇 / 华文声远。保留所有权利。</footer>';
         document.querySelectorAll('nav a.active').forEach(a => a.classList.remove('active'));
         if (el) el.classList.add('active');
@@ -186,7 +182,6 @@
       }
     }
 
-    // 默认加载首页
     window.addEventListener('DOMContentLoaded', () => {
       loadContent('README.md', document.querySelector('nav a[href="#"][onclick*="README.md"]'));
     });
