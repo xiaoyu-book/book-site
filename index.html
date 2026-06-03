@@ -86,6 +86,47 @@
       .overlay.open { display: block; }
       main { padding: 25px; margin-top: 60px; }
     }
+    /* 深色模式适配 */
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: #1a1d23;
+        color: #cfd8e3;
+      }
+      .wrapper { background: #1a1d23; }
+      main {
+        background: #22262e;
+        color: #cfd8e3;
+      }
+      main h1, main h2 { color: #e0e6ed; }
+      main blockquote {
+        background: #2a2f3a;
+        border-left-color: #4a627a;
+        color: #a0b0c0;
+      }
+      main hr { border-color: #3a3f4a; }
+      main a { color: #6a9fd8; }
+      footer {
+        color: #7a8a9a;
+        border-top-color: #3a3f4a;
+      }
+      nav {
+        background: #1e222a;
+        border-right-color: #2a2f3a;
+      }
+      nav .logo {
+        border-bottom-color: #2a2f3a;
+        color: #e0e6ed;
+      }
+      nav summary { color: #b0c0d0; }
+      nav summary:hover { background: #2a2f3a; }
+      nav a { color: #8a9aaa; }
+      nav a:hover { background: #2a2f3a; color: #ffffff; }
+      nav a.active { background: #3a4a5a; }
+      .menu-btn {
+        background: #2a2f3a;
+        color: #e0e6ed;
+      }
+    }
   </style>
   <script>
     document.addEventListener('contextmenu', e => e.preventDefault());
@@ -216,11 +257,9 @@
       if (!target) return;
       let href = target.getAttribute('href');
       if (!href) return;
-      // 只处理 .md 文件，且不是导航栏已经绑定的链接（避免重复）
       if (href.endsWith('.md') && !target.hasAttribute('onclick')) {
         e.preventDefault();
         loadContent(href, target);
-        // 同步高亮：移除其他 active，给当前链接加 active
         document.querySelectorAll('nav a.active, main a.active').forEach(a => a.classList.remove('active'));
         target.classList.add('active');
       }
