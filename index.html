@@ -35,12 +35,6 @@
     }
     nav summary:hover { background: #3e5062; }
     nav summary::-webkit-details-marker { display: none; }
-    nav summary::before {
-      content: ''; margin-right: 0; /* 隐藏默认三角，用统一图标代替 */
-    }
-    nav details > summary {
-      /* 图标已经在文字中 */
-    }
     nav a {
       display: block; padding: 8px 12px 8px 32px; border-radius: 4px;
       font-size: 0.95em; color: #b0c0d0; transition: background 0.2s;
@@ -116,7 +110,7 @@
         <li><a href="#" onclick="loadContent('README.md', this)">🏠 首页</a></li>
         <li>
           <details open>
-            <summary>◆ 裂缝系列</summary>
+            <summary>● 裂缝系列</summary>
             <a href="#" onclick="loadContent('lie-feng/index.md', this)">系列总览</a>
             <a href="#" onclick="loadContent('lie-feng/contents.md', this)">总目录</a>
             <a href="#" onclick="loadContent('lie-feng/trial.md', this)">试读章节</a>
@@ -125,7 +119,7 @@
         </li>
         <li>
           <details open>
-            <summary>◆ 天下神祇</summary>
+            <summary>● 天下神祇</summary>
             <a href="#" onclick="loadContent('tianxia-shenzhi/index.md', this)">系列总览</a>
             <a href="#" onclick="loadContent('tianxia-shenzhi/trial.md', this)">试读章节</a>
             <a href="#" onclick="loadContent('tianxia-shenzhi/volume1.md', this)">第一卷</a>
@@ -133,7 +127,7 @@
         </li>
         <li>
           <details open>
-            <summary>◆ 思想简史</summary>
+            <summary>● 思想简史</summary>
             <a href="#" onclick="loadContent('sixiang-jianshi/index.md', this)">系列总览</a>
             <a href="#" onclick="loadContent('sixiang-jianshi/trial.md', this)">试读章节</a>
             <a href="#" onclick="loadContent('sixiang-jianshi/volume1.md', this)">第一卷</a>
@@ -141,7 +135,7 @@
         </li>
         <li>
           <details open>
-            <summary>◆ 卧龙凤雏</summary>
+            <summary>● 卧龙凤雏</summary>
             <a href="#" onclick="loadContent('long-feng-chu/index.md', this)">系列总览</a>
             <a href="#" onclick="loadContent('long-feng-chu/trial.md', this)">试读章节</a>
             <a href="#" onclick="loadContent('long-feng-chu/volume1.md', this)">第一卷</a>
