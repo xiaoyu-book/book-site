@@ -8,7 +8,8 @@
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('selectstart', e => e.preventDefault());
   </script>
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
+  <!-- 使用本地样式文件 -->
+  <link rel="stylesheet" href="docsify.css">
 </head>
 <body>
   <div id="app">正在进入书城…</div>
@@ -18,7 +19,6 @@
       loadSidebar: true,
       subMaxLevel: 3,
       auto2top: true,
-      // 使用 Markdown 字符串定义侧边栏
       sidebar: {
         '/': `
 - **🏠 首页**
@@ -50,7 +50,8 @@
       }
     };
   </script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
+  <!-- 使用本地核心文件 -->
+  <script src="docsify.js"></script>
+  <script src="search.js"></script>
 </body>
 </html>
