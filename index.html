@@ -2,56 +2,162 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>个人作品</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>个人作品</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; height: 100vh; background: #fff; color: #333; }
+    a { text-decoration: none; color: #2c3e50; }
+    /* 左侧导航 */
+    nav {
+      width: 260px; background: #f8f9fa; border-right: 1px solid #e9ecef;
+      overflow-y: auto; flex-shrink: 0; padding: 20px 0;
+    }
+    nav .logo { font-size: 1.2em; font-weight: bold; padding: 0 20px 20px; border-bottom: 1px solid #e9ecef; margin-bottom: 10px; color: #2c3e50; }
+    nav ul { list-style: none; padding: 0 10px; }
+    nav li { margin: 2px 0; }
+    nav details { margin: 5px 0; }
+    nav summary {
+      font-weight: bold; padding: 8px 12px; cursor: pointer; border-radius: 4px;
+      transition: background 0.2s; outline: none; display: flex; align-items: center;
+    }
+    nav summary:hover { background: #e9ecef; }
+    nav summary::-webkit-details-marker { display: none; }
+    nav summary::before { content: '▸'; margin-right: 6px; font-size: 0.8em; transition: transform 0.2s; }
+    nav details[open] > summary::before { transform: rotate(90deg); }
+    nav a {
+      display: block; padding: 6px 12px 6px 32px; border-radius: 4px;
+      font-size: 0.95em; color: #555; transition: background 0.2s;
+    }
+    nav a:hover { background: #e9ecef; color: #000; }
+    nav a.active { background: #e2e6ea; font-weight: bold; color: #000; }
+    /* 右侧内容 */
+    main {
+      flex: 1; padding: 40px; overflow-y: auto; line-height: 1.7;
+      max-width: 800px; margin: 0 auto;
+    }
+    main h1 { font-size: 2em; margin-bottom: 0.5em; }
+    main h2 { font-size: 1.6em; margin: 1em 0 0.5em; }
+    main p { margin-bottom: 1em; }
+    main blockquote {
+      border-left: 4px solid #ced4da; padding-left: 16px; color: #555; margin: 1em 0;
+    }
+    main hr { border: none; border-top: 1px solid #eee; margin: 2em 0; }
+    main a { color: #1a73e8; text-decoration: underline; }
+    footer { margin-top: 2em; color: #999; font-size: 0.85em; border-top: 1px solid #eee; padding-top: 15px; }
+    /* 手机适配 */
+    @media (max-width: 768px) {
+      body { flex-direction: column; }
+      nav { width: 100%; border-right: none; border-bottom: 1px solid #e9ecef; max-height: 40vh; }
+      main { padding: 20px; }
+    }
+    /* 版权保护依然生效 */
+    body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+  </style>
   <script>
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('selectstart', e => e.preventDefault());
   </script>
-  <!-- 使用本地样式文件 -->
-  <link rel="stylesheet" href="docsify.css">
 </head>
 <body>
-  <div id="app">正在进入书城…</div>
+  <nav>
+    <div class="logo">📖 个人作品</div>
+    <ul>
+      <li><a href="#" onclick="loadContent('about.md', this)" class="active">👤 关于作者</a></li>
+      <li><a href="#" onclick="loadContent('README.md', this)">🏠 首页</a></li>
+      <li>
+        <details open>
+          <summary>📚 裂缝系列</summary>
+          <a href="#" onclick="loadContent('lie-feng/index.md', this)">系列总览</a>
+          <a href="#" onclick="loadContent('lie-feng/contents.md', this)">总目录</a>
+          <a href="#" onclick="loadContent('lie-feng/trial.md', this)">试读章节</a>
+          <a href="#" onclick="loadContent('lie-feng/volume1.md', this)">卷一：理论基石</a>
+        </details>
+      </li>
+      <li>
+        <details open>
+          <summary>🌏 天下神祇</summary>
+          <a href="#" onclick="loadContent('tianxia-shenzhi/index.md', this)">系列总览</a>
+          <a href="#" onclick="loadContent('tianxia-shenzhi/trial.md', this)">试读章节</a>
+          <a href="#" onclick="loadContent('tianxia-shenzhi/volume1.md', this)">卷一：创世之章</a>
+        </details>
+      </li>
+      <li>
+        <details open>
+          <summary>📖 思想简史</summary>
+          <a href="#" onclick="loadContent('sixiang-jianshi/index.md', this)">系列总览</a>
+          <a href="#" onclick="loadContent('sixiang-jianshi/trial.md', this)">试读章节</a>
+          <a href="#" onclick="loadContent('sixiang-jianshi/volume1.md', this)">第一章：时间的开端</a>
+        </details>
+      </li>
+      <li>
+        <details open>
+          <summary>📝 人间卧龙凤雏</summary>
+          <a href="#" onclick="loadContent('long-feng-chu/index.md', this)">系列总览</a>
+          <a href="#" onclick="loadContent('long-feng-chu/trial.md', this)">试读章节</a>
+          <a href="#" onclick="loadContent('long-feng-chu/volume1.md', this)">第一集</a>
+        </details>
+      </li>
+    </ul>
+  </nav>
+  <main id="content">
+    <h1>欢迎</h1>
+    <p>请从左侧导航选择章节阅读。</p>
+    <footer>© 2026 朱晓宇 / 华文声远。保留所有权利。</footer>
+  </main>
+
   <script>
-    window.$docsify = {
-      name: '个人作品',
-      loadSidebar: true,
-      subMaxLevel: 3,
-      auto2top: true,
-      sidebar: {
-        '/': `
-- **🏠 首页**
+    // 简单的 Markdown 转 HTML
+    function simpleMarkdown(md) {
+      if (!md) return '';
+      let html = md;
+      // 转义 HTML
+      html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      // 标题
+      html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+      html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
+      html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+      // 加粗
+      html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      // 行内代码
+      html = html.replace(/`(.+?)`/g, '<code>$1</code>');
+      // 链接 [text](url)
+      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+      // 引用
+      html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
+      // 水平线
+      html = html.replace(/^---$/gm, '<hr>');
+      // 换行转段落：双换行分为段落，单换行忽略
+      let paragraphs = html.split(/\n\n+/);
+      html = paragraphs.map(p => {
+        p = p.trim();
+        if (p.startsWith('<h') || p.startsWith('<blockquote') || p.startsWith('<hr')) return p;
+        return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
+      }).join('');
+      return html;
+    }
 
-- **📚 裂缝系列**
-  - [系列总览](#/lie-feng/index.md)
-  - [总目录](#/lie-feng/contents.md)
-  - [试读章节](#/lie-feng/trial.md)
-  - [卷一：理论基石](#/lie-feng/volume1.md)
-
-- **🌏 天下神祇**
-  - [系列总览](#/tianxia-shenzhi/index.md)
-  - [试读章节](#/tianxia-shenzhi/trial.md)
-  - [卷一：创世之章](#/tianxia-shenzhi/volume1.md)
-
-- **📖 思想简史**
-  - [系列总览](#/sixiang-jianshi/index.md)
-  - [试读章节](#/sixiang-jianshi/trial.md)
-  - [第一章：时间的开端](#/sixiang-jianshi/volume1.md)
-
-- **📝 人间卧龙凤雏**
-  - [系列总览](#/long-feng-chu/index.md)
-  - [试读章节](#/long-feng-chu/trial.md)
-  - [第一集](#/long-feng-chu/volume1.md)
-
-- **👤 关于作者**
-  - [个人介绍](#/about.md)
-        `
+    async function loadContent(file, el) {
+      try {
+        const res = await fetch(file);
+        if (!res.ok) throw new Error('文件未找到');
+        const text = await res.text();
+        const html = simpleMarkdown(text);
+        document.getElementById('content').innerHTML = html + '<footer>© 2026 朱晓宇 / 华文声远。保留所有权利。</footer>';
+        // 高亮当前选中
+        document.querySelectorAll('nav a.active').forEach(a => a.classList.remove('active'));
+        if (el) el.classList.add('active');
+        window.scrollTo(0, 0);
+      } catch (e) {
+        document.getElementById('content').innerHTML = '<p style="color:red;">加载失败：' + e.message + '</p>';
       }
-    };
+    }
+
+    // 默认加载关于作者
+    window.addEventListener('DOMContentLoaded', () => {
+      const aboutLink = document.querySelector('nav a[href="#"]');
+      if (aboutLink) loadContent('about.md', aboutLink);
+    });
   </script>
-  <!-- 使用本地核心文件 -->
-  <script src="docsify.js"></script>
-  <script src="search.js"></script>
 </body>
 </html>
