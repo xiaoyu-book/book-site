@@ -210,6 +210,22 @@
       }
     }
 
+    // 拦截页面中所有的 .md 链接，统一使用 loadContent 加载，避免样式丢失
+    document.addEventListener('click', function(e) {
+      const target = e.target.closest('a');
+      if (!target) return;
+      let href = target.getAttribute('href');
+      if (!href) return;
+      // 只处理 .md 文件，且不是导航栏已经绑定的链接（避免重复）
+      if (href.endsWith('.md') && !target.hasAttribute('onclick')) {
+        e.preventDefault();
+        loadContent(href, target);
+        // 同步高亮：移除其他 active，给当前链接加 active
+        document.querySelectorAll('nav a.active, main a.active').forEach(a => a.classList.remove('active'));
+        target.classList.add('active');
+      }
+    });
+
     window.addEventListener('DOMContentLoaded', () => {
       loadContent('README.md', document.querySelector('nav a[href="#"][onclick*="README.md"]'));
     });
