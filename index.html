@@ -8,7 +8,6 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; height: 100vh; background: #fff; color: #333; }
     a { text-decoration: none; color: #2c3e50; }
-    /* 左侧导航 */
     nav {
       width: 260px; background: #f8f9fa; border-right: 1px solid #e9ecef;
       overflow-y: auto; flex-shrink: 0; padding: 20px 0;
@@ -31,7 +30,6 @@
     }
     nav a:hover { background: #e9ecef; color: #000; }
     nav a.active { background: #e2e6ea; font-weight: bold; color: #000; }
-    /* 右侧内容 */
     main {
       flex: 1; padding: 40px; overflow-y: auto; line-height: 1.7;
       max-width: 800px; margin: 0 auto;
@@ -45,13 +43,11 @@
     main hr { border: none; border-top: 1px solid #eee; margin: 2em 0; }
     main a { color: #1a73e8; text-decoration: underline; }
     footer { margin-top: 2em; color: #999; font-size: 0.85em; border-top: 1px solid #eee; padding-top: 15px; }
-    /* 手机适配 */
     @media (max-width: 768px) {
       body { flex-direction: column; }
       nav { width: 100%; border-right: none; border-bottom: 1px solid #e9ecef; max-height: 40vh; }
       main { padding: 20px; }
     }
-    /* 版权保护依然生效 */
     body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
   </style>
   <script>
@@ -63,7 +59,6 @@
   <nav>
     <div class="logo">📖 个人作品</div>
     <ul>
-      <li><a href="#" onclick="loadContent('about.md', this)" class="active">👤 关于作者</a></li>
       <li><a href="#" onclick="loadContent('README.md', this)">🏠 首页</a></li>
       <li>
         <details open>
@@ -71,7 +66,7 @@
           <a href="#" onclick="loadContent('lie-feng/index.md', this)">系列总览</a>
           <a href="#" onclick="loadContent('lie-feng/contents.md', this)">总目录</a>
           <a href="#" onclick="loadContent('lie-feng/trial.md', this)">试读章节</a>
-          <a href="#" onclick="loadContent('lie-feng/volume1.md', this)">卷一：理论基石</a>
+          <a href="#" onclick="loadContent('lie-feng/volume1.md', this)">第一卷</a>
         </details>
       </li>
       <li>
@@ -79,7 +74,7 @@
           <summary>🌏 天下神祇</summary>
           <a href="#" onclick="loadContent('tianxia-shenzhi/index.md', this)">系列总览</a>
           <a href="#" onclick="loadContent('tianxia-shenzhi/trial.md', this)">试读章节</a>
-          <a href="#" onclick="loadContent('tianxia-shenzhi/volume1.md', this)">卷一：创世之章</a>
+          <a href="#" onclick="loadContent('tianxia-shenzhi/volume1.md', this)">第一卷</a>
         </details>
       </li>
       <li>
@@ -87,7 +82,7 @@
           <summary>📖 思想简史</summary>
           <a href="#" onclick="loadContent('sixiang-jianshi/index.md', this)">系列总览</a>
           <a href="#" onclick="loadContent('sixiang-jianshi/trial.md', this)">试读章节</a>
-          <a href="#" onclick="loadContent('sixiang-jianshi/volume1.md', this)">第一章：时间的开端</a>
+          <a href="#" onclick="loadContent('sixiang-jianshi/volume1.md', this)">第一卷</a>
         </details>
       </li>
       <li>
@@ -95,9 +90,10 @@
           <summary>📝 人间卧龙凤雏</summary>
           <a href="#" onclick="loadContent('long-feng-chu/index.md', this)">系列总览</a>
           <a href="#" onclick="loadContent('long-feng-chu/trial.md', this)">试读章节</a>
-          <a href="#" onclick="loadContent('long-feng-chu/volume1.md', this)">第一集</a>
+          <a href="#" onclick="loadContent('long-feng-chu/volume1.md', this)">第一卷</a>
         </details>
       </li>
+      <li><a href="#" onclick="loadContent('about.md', this)">👤 关于作者</a></li>
     </ul>
   </nav>
   <main id="content">
@@ -107,27 +103,18 @@
   </main>
 
   <script>
-    // 简单的 Markdown 转 HTML
     function simpleMarkdown(md) {
       if (!md) return '';
       let html = md;
-      // 转义 HTML
       html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      // 标题
       html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
       html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
       html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
-      // 加粗
       html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-      // 行内代码
       html = html.replace(/`(.+?)`/g, '<code>$1</code>');
-      // 链接 [text](url)
       html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
-      // 引用
       html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
-      // 水平线
       html = html.replace(/^---$/gm, '<hr>');
-      // 换行转段落：双换行分为段落，单换行忽略
       let paragraphs = html.split(/\n\n+/);
       html = paragraphs.map(p => {
         p = p.trim();
@@ -144,7 +131,6 @@
         const text = await res.text();
         const html = simpleMarkdown(text);
         document.getElementById('content').innerHTML = html + '<footer>© 2026 朱晓宇 / 华文声远。保留所有权利。</footer>';
-        // 高亮当前选中
         document.querySelectorAll('nav a.active').forEach(a => a.classList.remove('active'));
         if (el) el.classList.add('active');
         window.scrollTo(0, 0);
@@ -153,10 +139,9 @@
       }
     }
 
-    // 默认加载关于作者
     window.addEventListener('DOMContentLoaded', () => {
-      const aboutLink = document.querySelector('nav a[href="#"]');
-      if (aboutLink) loadContent('about.md', aboutLink);
+      const firstLink = document.querySelector('nav a[href="#"]');
+      if (firstLink) loadContent(firstLink.getAttribute('onclick')?.match(/'([^']+)'/)?.[1], firstLink);
     });
   </script>
 </body>
