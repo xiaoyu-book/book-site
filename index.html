@@ -72,6 +72,14 @@
     document.addEventListener('contextmenu', e => e.preventDefault());
     document.addEventListener('selectstart', e => e.preventDefault());
   </script>
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JFTES4PWBZ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-JFTES4PWBZ');
+  </script>
 </head>
 <body>
   <button class="menu-btn" onclick="toggleMenu()">☰ 菜单</button>
@@ -167,7 +175,6 @@
         if (!res.ok) throw new Error('文件未找到');
         const text = await res.text();
         let html;
-        // 如果文件名是 about.md，内容直接用，不进行 Markdown 转换
         if (file.endsWith('about.md')) {
           html = text;
         } else {
@@ -177,6 +184,8 @@
         document.querySelectorAll('nav a.active').forEach(a => a.classList.remove('active'));
         if (el) el.classList.add('active');
         window.scrollTo(0, 0);
+        // 告诉 Google Analytics 页面已切换
+        gtag('config', 'G-JFTES4PWBZ', { page_path: file });
       } catch (e) {
         document.getElementById('content').innerHTML = '<p style="color:red;">加载失败：' + e.message + '</p>';
       }
