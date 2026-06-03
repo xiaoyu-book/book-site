@@ -41,17 +41,11 @@
 
 
 <h2>联系与关注</h2>
-
 <ul>
-
-&nbsp; <li><strong>作品官网</strong>：<a href="https://book.ihuawin.com">https://book.ihuawin.com</a></li>
-
-&nbsp; <li><strong>微信公众号</strong>：<a href="https://mp.weixin.qq.com">百味工厂</a>（微信内搜索"百味工厂"）</li>
-
-&nbsp; <li><strong>视频号</strong>：<a href="https://channels.weixin.qq.com">百味工场</a>（微信内搜索"百味工场"）</li>
-
-&nbsp; <li><strong>邮箱</strong>：taolihusheng@qq.com</li>
-
+  <li><strong>作品官网</strong>：<a href="https://book.ihuawin.com">https://book.ihuawin.com</a></li>
+  <li><strong>微信公众号</strong>：百味工厂<br><img src="images/weixin-qr.png" alt="公众号二维码" width="160" height="160" style="margin-top:8px;"></li>
+  <li><strong>视频号</strong>：百味工场<br><img src="images/shipinhao-qr.png" alt="视频号二维码" width="160" height="160" style="margin-top:8px;"></li>
+  <li><strong>邮箱</strong>：taolihusheng@qq.com</li>
 </ul>
 
 
