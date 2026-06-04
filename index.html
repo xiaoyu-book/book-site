@@ -42,7 +42,7 @@
     main {
       flex: 1; padding: 40px; overflow-y: auto; line-height: 1.7;
       max-width: 800px; margin: 0 auto;
-      font-size: 20px;
+      font-size: 19px;
     }
     main h1 { font-size: 2em; margin-bottom: 0.5em; }
     main h2 { font-size: 1.6em; margin: 1em 0 0.5em; }
@@ -149,6 +149,7 @@
       html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
       html = html.replace(/`(.+?)`/g, '<code>$1</code>');
       html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+      html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%;">');
       html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
       html = html.replace(/^---$/gm, '<hr>');
       let paragraphs = html.split(/\n\n+/);
@@ -165,13 +166,7 @@
         const res = await fetch(file);
         if (!res.ok) throw new Error('文件未找到');
         const text = await res.text();
-        let html;
-        // 关于作者和所有试读章节，直接作为HTML显示，不进行Markdown转义
-        if (file.endsWith('about.md') || file.endsWith('trial.md')) {
-          html = text;
-        } else {
-          html = simpleMarkdown(text);
-        }
+        const html = simpleMarkdown(text);
         document.getElementById('content').innerHTML = html + '<footer>© 2026 朱晓宇 / 华文声远 保留所有权利。</footer>';
         document.querySelectorAll('nav a.active').forEach(a => a.classList.remove('active'));
         if (el) el.classList.add('active');
