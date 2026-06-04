@@ -166,6 +166,7 @@
         if (!res.ok) throw new Error('文件未找到');
         const text = await res.text();
         let html;
+        // 关于作者和所有试读章节，直接作为HTML显示，不进行Markdown转义
         if (file.endsWith('about.md') || file.endsWith('trial.md')) {
           html = text;
         } else {
