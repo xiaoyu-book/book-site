@@ -23,7 +23,6 @@
       transition: background 0.2s; outline: none; display: flex; align-items: center;
     }
     nav summary:hover { background: #e9ecef; }
-    /* 去掉默认的小三角 */
     nav summary::before { content: ''; margin-right: 0; }
     nav a {
       display: block; padding: 6px 12px 6px 32px; border-radius: 4px;
@@ -31,7 +30,6 @@
     }
     nav a:hover { background: #e9ecef; color: #000; }
     nav a.active { background: #e2e6ea; font-weight: bold; color: #000; }
-    /* 手机端目录按钮：固定在左下角 */
     .menu-btn {
       display: none; position: fixed; bottom: 20px; left: 20px; z-index: 200;
       background: #fff; border: 1px solid #ccc; padding: 8px 14px; border-radius: 6px;
@@ -44,7 +42,7 @@
     main {
       flex: 1; padding: 40px; overflow-y: auto; line-height: 1.7;
       max-width: 800px; margin: 0 auto;
-      font-size: 18px; /* 正文字号18px */
+      font-size: 20px;
     }
     main h1 { font-size: 2em; margin-bottom: 0.5em; }
     main h2 { font-size: 1.6em; margin: 1em 0 0.5em; }
@@ -168,7 +166,7 @@
         if (!res.ok) throw new Error('文件未找到');
         const text = await res.text();
         let html;
-        if (file.endsWith('about.md')) {
+        if (file.endsWith('about.md') || file.endsWith('trial.md')) {
           html = text;
         } else {
           html = simpleMarkdown(text);
