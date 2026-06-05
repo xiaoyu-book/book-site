@@ -42,7 +42,7 @@
     main {
       flex: 1; padding: 40px; overflow-y: auto; line-height: 1.7;
       max-width: 800px; margin: 0 auto;
-      font-size: 19px;
+      font-size: 18px;
     }
     main h1 { font-size: 2em; margin-bottom: 0.5em; }
     main h2 { font-size: 1.6em; margin: 1em 0 0.5em; }
@@ -85,7 +85,7 @@
             <summary>裂缝系列</summary>
             <a href="#" onclick="loadContent('lie-feng/index.md', this)">系列总览</a>
             <a href="#" onclick="loadContent('lie-feng/contents.md', this)">总目录</a>
-            <a href="#" onclick="loadContent('lie-feng/trial.md', this)">试读章节</a>
+            <a href="#" onclick="loadContent('lie-feng/trial.html', this)">试读章节</a>
             <a href="#" onclick="loadContent('lie-feng/volume1.md', this)">第一卷</a>
           </details>
         </li>
@@ -93,7 +93,7 @@
           <details>
             <summary>天下神祇</summary>
             <a href="#" onclick="loadContent('tianxia-shenzhi/index.md', this)">系列总览</a>
-            <a href="#" onclick="loadContent('tianxia-shenzhi/trial.md', this)">试读章节</a>
+            <a href="#" onclick="loadContent('tianxia-shenzhi/trial.html', this)">试读章节</a>
             <a href="#" onclick="loadContent('tianxia-shenzhi/volume1.md', this)">第一卷</a>
           </details>
         </li>
@@ -101,7 +101,7 @@
           <details>
             <summary>思想简史</summary>
             <a href="#" onclick="loadContent('sixiang-jianshi/index.md', this)">系列总览</a>
-            <a href="#" onclick="loadContent('sixiang-jianshi/trial.md', this)">试读章节</a>
+            <a href="#" onclick="loadContent('sixiang-jianshi/trial.html', this)">试读章节</a>
             <a href="#" onclick="loadContent('sixiang-jianshi/volume1.md', this)">第一卷</a>
           </details>
         </li>
@@ -109,11 +109,11 @@
           <details>
             <summary>卧龙凤雏</summary>
             <a href="#" onclick="loadContent('long-feng-chu/index.md', this)">系列总览</a>
-            <a href="#" onclick="loadContent('long-feng-chu/trial.md', this)">试读章节</a>
+            <a href="#" onclick="loadContent('long-feng-chu/trial.html', this)">试读章节</a>
             <a href="#" onclick="loadContent('long-feng-chu/volume1.md', this)">第一卷</a>
           </details>
         </li>
-        <li><a href="#" onclick="loadContent('about.md', this)">👤 关于作者</a></li>
+        <li><a href="#" onclick="loadContent('about.html', this)">👤 关于作者</a></li>
       </ul>
     </nav>
     <main id="content">
@@ -139,6 +139,7 @@
       });
     });
 
+    // Markdown 渲染函数
     function simpleMarkdown(md) {
       if (!md) return '';
       let html = md;
@@ -148,25 +149,32 @@
       html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
       html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
       html = html.replace(/`(.+?)`/g, '<code>$1</code>');
-      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
       html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%;">');
+      html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
       html = html.replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>');
       html = html.replace(/^---$/gm, '<hr>');
       let paragraphs = html.split(/\n\n+/);
       html = paragraphs.map(p => {
         p = p.trim();
-        if (p.startsWith('<h') || p.startsWith('<blockquote') || p.startsWith('<hr')) return p;
+        if (p.startsWith('<h') || p.startsWith('<blockquote') || p.startsWith('<hr') || p.startsWith('<img')) return p;
         return '<p>' + p.replace(/\n/g, '<br>') + '</p>';
       }).join('');
       return html;
     }
 
+    // 统一的内容加载函数
     async function loadContent(file, el) {
       try {
         const res = await fetch(file);
         if (!res.ok) throw new Error('文件未找到');
         const text = await res.text();
-        const html = simpleMarkdown(text);
+        let html;
+        // .html 后缀直接显示，其他用 Markdown 渲染
+        if (file.endsWith('.html')) {
+          html = text;
+        } else {
+          html = simpleMarkdown(text);
+        }
         document.getElementById('content').innerHTML = html + '<footer>© 2026 朱晓宇 / 华文声远 保留所有权利。</footer>';
         document.querySelectorAll('nav a.active').forEach(a => a.classList.remove('active'));
         if (el) el.classList.add('active');
