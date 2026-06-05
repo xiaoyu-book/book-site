@@ -51,7 +51,7 @@
       max-width: 800px; margin: 0 auto;
     }
     main.loading { opacity: 0.5; transition: opacity 0.2s; }
-      font-size: 18px;
+      font-size: 20px;
     }
     main h1 { font-size: 2em; margin-bottom: 0.5em; }
     main h2 { font-size: 1.6em; margin: 1em 0 0.5em; }
@@ -137,8 +137,16 @@
       </ul>
     </nav>
     <main id="content">
-      <h1>欢迎</h1>
-      <p>请从左侧导航选择章节阅读。</p>
+      <h2>欢迎来到作品官网</h2>
+      <p>这里是朱晓宇（笔名尧舜禹）的个人创作空间。</p>
+      <p>目前正在连载 / 规划中的系列：</p>
+      <ul>
+        <li><strong>裂缝系列</strong> —— 横跨理论、应用与文学叙事</li>
+        <li><strong>天下神祇</strong> —— 华夏诸神权力与生存秘史</li>
+        <li><strong>思想简史</strong> —— 以叙事方式重述人类思想脉络</li>
+        <li><strong>卧龙凤雏</strong> —— 观念喜剧系列</li>
+      </ul>
+      <p>点击左侧目录选择你感兴趣的作品阅读。</p>
       <footer>© 2026 朱晓宇 / 华文声远 保留所有权利。</footer>
     </main>
   </div>
@@ -209,7 +217,9 @@
     }
 
     window.addEventListener('DOMContentLoaded', () => {
-      loadContent('README.md', document.querySelector('nav a[href="#"][onclick*="README.md"]'));
+      // 首页内容已内联在 HTML 中，无需额外 fetch
+      const homeLink = document.querySelector('nav a[href="#"][onclick*="README.md"]');
+      if (homeLink) homeLink.classList.add('active');
     });
   </script>
 </body>
