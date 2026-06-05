@@ -144,6 +144,18 @@
     .search-results a:hover { background: var(--nav-hover); }
     .search-results .result-series { font-size: 0.8em; color: var(--footer-text); margin-top: 2px; }
     .search-results .result-empty { padding: 12px; text-align: center; color: var(--footer-text); font-size: 0.9em; }
+    .progress-bar {
+      position: fixed; top: 0; left: 0; width: 0; height: 3px;
+      background: var(--link-color); z-index: 999; transition: width 0.1s;
+    }
+    .back-top {
+      position: fixed; bottom: 20px; right: 20px; z-index: 200;
+      background: var(--nav-bg); border: 1px solid var(--nav-border); padding: 8px 12px;
+      border-radius: 6px; font-size: 0.85em; cursor: pointer; box-shadow: 0 2px 6px var(--shadow);
+      color: var(--text); display: none; text-decoration: none; line-height: 1;
+    }
+    .back-top.show { display: block; }
+    .kbd-hint { font-size: 0.75em; color: var(--footer-text); padding: 0 16px 8px; opacity: 0.6; }
     @media (max-width: 768px) {
       .wrapper { flex-direction: column; }
       nav {
@@ -157,6 +169,8 @@
       main { padding: 20px; margin-top: 0; }
     }
   </style>
+  <div class="progress-bar" id="progressBar"></div>
+  <button class="back-top" id="backTop" onclick="scrollTo({top:0,behavior:'smooth'})">↑ 顶部</button>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-JFTES4PWBZ"></script>
   <script>
@@ -220,6 +234,7 @@
         </li>
         <li><a href="#/about.html" onclick="loadContent('about.html', this)">👤 关于作者</a></li>
       </ul>
+      <div class="kbd-hint">/ 搜索 · ← → 翻页</div>
     </nav>
     <main id="content">
       <h2>欢迎来到作品官网</h2>
@@ -459,6 +474,9 @@
         if (el) el.classList.add('active');
         // 展开当前系列，收起其他
         expandCurrentSeries(file);
+        // 侧边栏自动滚动到当前链接
+        const activeLink = document.querySelector('nav a.active');
+        if (activeLink) activeLink.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
         // 更新 URL hash（不触发 hashchange）
         history.replaceState(null, '', '#/' + file);
         window.scrollTo(0, 0);
@@ -487,6 +505,36 @@
         const homeLink = document.querySelector('nav a[onclick*="README.md"]');
         if (homeLink) homeLink.classList.add('active');
       }
+    });
+
+    // ===== 键盘快捷键 =====
+    document.addEventListener('keydown', (e) => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === '/' && e.target.tagName !== 'INPUT') {
+        e.preventDefault();
+        document.getElementById('searchInput').focus();
+      }
+      if ((e.key === 'k' || e.key === 'K') && (e.ctrlKey || e.metaKey)) {
+        e.preventDefault();
+        document.getElementById('searchInput').focus();
+      }
+      if (e.key === 'ArrowLeft') {
+        const prev = document.querySelector('.nav-prev');
+        if (prev) prev.click();
+      }
+      if (e.key === 'ArrowRight') {
+        const next = document.querySelector('.nav-next');
+        if (next) next.click();
+      }
+    });
+
+    // ===== 阅读进度条 + 回到顶部 =====
+    const contentArea = document.getElementById('content');
+    contentArea.addEventListener('scroll', () => {
+      const sh = contentArea.scrollHeight - contentArea.clientHeight;
+      const pct = sh > 0 ? (contentArea.scrollTop / sh) * 100 : 0;
+      document.getElementById('progressBar').style.width = pct + '%';
+      document.getElementById('backTop').classList.toggle('show', contentArea.scrollTop > 400);
     });
   </script>
 </body>
