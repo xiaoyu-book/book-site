@@ -25,12 +25,14 @@
     nav ul { list-style: none; padding: 0 10px; }
     nav li { margin: 2px 0; }
     nav details { margin: 5px 0; }
+    nav details[open] { padding-bottom: 4px; }
     nav summary {
       font-weight: bold; padding: 8px 12px; cursor: pointer; border-radius: 4px;
       transition: background 0.2s; outline: none; display: flex; align-items: center;
     }
+    nav summary::before { content: '▶ '; font-size: 0.7em; margin-right: 6px; transition: transform 0.2s; }
+    nav details[open] > summary::before { transform: rotate(90deg); }
     nav summary:hover { background: #e9ecef; }
-    nav summary::before { content: ''; margin-right: 0; }
     nav a {
       display: block; padding: 6px 12px 6px 32px; border-radius: 4px;
       font-size: 0.95em; color: #555; transition: background 0.2s;
@@ -196,14 +198,17 @@
       });
     });
 
-    // Markdown 渲染函数
+    // Markdown 渲染函数（带锚点ID）
+    function headingToId(text) {
+      return text.replace(/[^\w\u4e00-\u9fff]+/g, '-').replace(/^-|-$/g, '').toLowerCase();
+    }
     function simpleMarkdown(md) {
       if (!md) return '';
       let html = md;
       html = html.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
-      html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
-      html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
+      html = html.replace(/^### (.+)$/gm, (m, t) => '<h3 id="' + headingToId(t) + '">' + t + '</h3>');
+      html = html.replace(/^## (.+)$/gm, (m, t) => '<h2 id="' + headingToId(t) + '">' + t + '</h2>');
+      html = html.replace(/^# (.+)$/gm, (m, t) => '<h1 id="' + headingToId(t) + '">' + t + '</h1>');
       html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
       html = html.replace(/`(.+?)`/g, '<code>$1</code>');
       html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1" style="max-width:100%;">');
@@ -236,6 +241,17 @@
       return html;
     }
 
+    // 导航侧边栏展开策略：打开当前章节所属的系列，收起其他系列
+    function expandCurrentSeries(file) {
+      const navLinks = document.querySelectorAll('nav details');
+      navLinks.forEach(d => d.removeAttribute('open'));
+      const link = document.querySelector('nav a[onclick*="' + file + '"]');
+      if (link) {
+        const details = link.closest('details');
+        if (details) details.setAttribute('open', '');
+      }
+    }
+
     // 统一的内容加载函数
     async function loadContent(file, el) {
       const contentDiv = document.getElementById('content');
@@ -257,6 +273,8 @@
         contentDiv.innerHTML = html;
         document.querySelectorAll('nav a.active').forEach(a => a.classList.remove('active'));
         if (el) el.classList.add('active');
+        // 展开当前系列，收起其他
+        expandCurrentSeries(file);
         // 更新 URL hash（不触发 hashchange）
         history.replaceState(null, '', '#/' + file);
         window.scrollTo(0, 0);
