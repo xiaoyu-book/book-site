@@ -3,7 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>个人作品</title>
+  <title>朱晓宇（尧舜禹）的个人作品站</title>
+  <meta name="description" content="朱晓宇（笔名尧舜禹）的个人原创作品站。收录裂缝系列、天下神祇、思想简史、卧龙凤雏等系列作品。">
+  <meta name="keywords" content="朱晓宇,尧舜禹,裂缝系列,天下神祇,思想简史,卧龙凤雏,华文声远,百味工场,原创文学">
+  <meta property="og:title" content="朱晓宇的个人作品站">
+  <meta property="og:description" content="原创作品合集。收录裂缝系列、天下神祇、思想简史、卧龙凤雏等系列。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://book.ihuawin.com">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #fff; color: #333; }
@@ -40,8 +47,10 @@
       background: rgba(0,0,0,0.3); z-index: 90;
     }
     main {
-      flex: 1; padding: 40px; overflow-y: auto; line-height: 1.7;
+      flex: 1; padding: 40px; overflow-y: auto; line-height: 1.8;
       max-width: 800px; margin: 0 auto;
+    }
+    main.loading { opacity: 0.5; transition: opacity 0.2s; }
       font-size: 18px;
     }
     main h1 { font-size: 2em; margin-bottom: 0.5em; }
@@ -67,8 +76,19 @@
       main { padding: 20px; margin-top: 0; }
     }
   </style>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-JFTES4PWBZ"></script>
   <script>
-    document.addEventListener('contextmenu', e => e.preventDefault());
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-JFTES4PWBZ');
+  </script>
+  <script>
+    document.addEventListener('contextmenu', e => {
+      e.preventDefault();
+      console.log('本网站内容受版权保护，如需转载请联系作者。');
+    });
     document.addEventListener('selectstart', e => e.preventDefault());
   </script>
 </head>
@@ -164,6 +184,8 @@
 
     // 统一的内容加载函数
     async function loadContent(file, el) {
+      const contentDiv = document.getElementById('content');
+      contentDiv.classList.add('loading');
       try {
         const res = await fetch(file);
         if (!res.ok) throw new Error('文件未找到');
@@ -175,12 +197,14 @@
         } else {
           html = simpleMarkdown(text);
         }
-        document.getElementById('content').innerHTML = html + '<footer>© 2026 朱晓宇 / 华文声远 保留所有权利。</footer>';
+        contentDiv.innerHTML = html + '<footer>© 2026 朱晓宇 / 华文声远 保留所有权利。</footer>';
         document.querySelectorAll('nav a.active').forEach(a => a.classList.remove('active'));
         if (el) el.classList.add('active');
         window.scrollTo(0, 0);
       } catch (e) {
-        document.getElementById('content').innerHTML = '<p style="color:red;">加载失败：' + e.message + '</p>';
+        contentDiv.innerHTML = '<p style="color:red;">加载失败：' + e.message + '</p>';
+      } finally {
+        contentDiv.classList.remove('loading');
       }
     }
 
