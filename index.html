@@ -121,6 +121,29 @@
     .nav-prev { margin-right: auto; }
     .nav-next { margin-left: auto; }
     body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; transition: background 0.3s, color 0.3s; }
+    .search-box { padding: 0 16px 12px; position: relative; }
+    .search-box input {
+      width: 100%; padding: 6px 10px; border: 1px solid var(--nav-border); border-radius: 4px;
+      font-size: 0.9em; background: var(--bg-body); color: var(--text); outline: none;
+      transition: border-color 0.2s;
+    }
+    .search-box input:focus { border-color: var(--link-color); }
+    .search-box input::placeholder { color: var(--footer-text); }
+    .search-results {
+      position: absolute; top: 100%; left: 16px; right: 16px; z-index: 300;
+      background: var(--bg-body); border: 1px solid var(--nav-border); border-radius: 4px;
+      max-height: 300px; overflow-y: auto; box-shadow: 0 4px 12px var(--shadow);
+      display: none;
+    }
+    .search-results.show { display: block; }
+    .search-results a {
+      display: block; padding: 8px 12px; font-size: 0.9em; border-bottom: 1px solid var(--nav-border);
+      color: var(--text); text-decoration: none;
+    }
+    .search-results a:last-child { border-bottom: none; }
+    .search-results a:hover { background: var(--nav-hover); }
+    .search-results .result-series { font-size: 0.8em; color: var(--footer-text); margin-top: 2px; }
+    .search-results .result-empty { padding: 12px; text-align: center; color: var(--footer-text); font-size: 0.9em; }
     @media (max-width: 768px) {
       .wrapper { flex-direction: column; }
       nav {
@@ -156,6 +179,10 @@
   <div class="wrapper">
     <nav id="navbar">
       <div class="logo">📖 个人作品<button class="dark-toggle" onclick="toggleDark()" title="切换暗色模式">🌙</button></div>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="搜索作品…" oninput="handleSearch(this.value)" onblur="setTimeout(()=>hideSearch(),200)">
+        <div class="search-results" id="searchResults"></div>
+      </div>
       <ul>
         <li><a href="#/README.md" onclick="loadContent('README.md', this)">🏠 首页</a></li>
         <li>
@@ -252,7 +279,74 @@
       document.body.classList.add('dark');
     }
 
-    // ===== 折叠状态持久化 =====
+    // ===== 站内搜索 =====
+    let searchCache = null;
+    let searchBuildPromise = null;
+
+    async function ensureSearchIndex() {
+      if (searchCache) return;
+      if (searchBuildPromise) return searchBuildPromise;
+      searchBuildPromise = buildSearchIndex();
+      return searchBuildPromise;
+    }
+
+    async function buildSearchIndex() {
+      searchCache = [];
+      const files = chapterOrder.filter(f => f.file !== 'about.html');
+      const fetches = files.map(async (item) => {
+        try {
+          const res = await fetch(item.file);
+          if (!res.ok) return;
+          let text = await res.text();
+          // Strip HTML tags for HTML files
+          if (item.file.endsWith('.html')) {
+            text = text.replace(/<[^>]+>/g, ' ');
+          }
+          searchCache.push({
+            file: item.file,
+            label: item.label,
+            series: item.series,
+            text: text.substring(0, 3000).toLowerCase()
+          });
+        } catch(e) {}
+      });
+      await Promise.all(fetches);
+    }
+
+    function hideSearch() {
+      document.getElementById('searchResults').classList.remove('show');
+    }
+
+    async function handleSearch(query) {
+      const resultsDiv = document.getElementById('searchResults');
+      query = query.trim();
+      if (!query || query.length < 1) {
+        resultsDiv.classList.remove('show');
+        return;
+      }
+      await ensureSearchIndex();
+      const q = query.toLowerCase();
+      const results = searchCache.filter(item =>
+        item.label.toLowerCase().includes(q) || item.text.includes(q)
+      );
+      if (results.length === 0) {
+        resultsDiv.innerHTML = '<div class="result-empty">未找到相关内容</div>';
+      } else {
+        resultsDiv.innerHTML = results.slice(0, 10).map(r =>
+          '<a href="#/' + r.file + '" onmousedown="loadContent(\'' + r.file + '\', this)">' +
+          highlightMatch(r.label, query) +
+          (r.series ? '<div class="result-series">' + r.series + '</div>' : '') +
+          '</a>'
+        ).join('');
+      }
+      resultsDiv.classList.add('show');
+    }
+
+    function highlightMatch(text, query) {
+      const idx = text.toLowerCase().indexOf(query.toLowerCase());
+      if (idx === -1) return text;
+      return text.substring(0, idx) + '<strong>' + text.substring(idx, idx + query.length) + '</strong>' + text.substring(idx + query.length);
+    }
     document.querySelectorAll('nav details').forEach(d => {
       d.addEventListener('toggle', function() {
         // 保存展开的系列名称
