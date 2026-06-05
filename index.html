@@ -12,16 +12,58 @@
   <meta property="og:url" content="https://book.ihuawin.com">
   <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
   <style>
+    :root {
+      --bg-body: #fff;
+      --bg-main: #fcfcfc;
+      --text: #333;
+      --nav-bg: #f8f9fa;
+      --nav-border: #e9ecef;
+      --nav-hover: #e9ecef;
+      --nav-active: #e2e6ea;
+      --blockquote-bg: #f5f5f5;
+      --blockquote-border: #adb5bd;
+      --blockquote-text: #555;
+      --hr-color: #e0e0e0;
+      --footer-text: #999;
+      --link-color: #1a73e8;
+      --code-bg: #f0f0f0;
+      --shadow: rgba(0,0,0,0.1);
+      --overlay-bg: rgba(0,0,0,0.3);
+      --nav-logo-border: #e9ecef;
+    }
+    body.dark {
+      --bg-body: #1a1a2e;
+      --bg-main: #16213e;
+      --text: #d0d0d0;
+      --nav-bg: #0f3460;
+      --nav-border: #1a1a2e;
+      --nav-hover: #1a1a2e;
+      --nav-active: #1a5276;
+      --blockquote-bg: #0f3460;
+      --blockquote-border: #533483;
+      --blockquote-text: #aaa;
+      --hr-color: #2a2a4a;
+      --footer-text: #777;
+      --link-color: #64b5f6;
+      --code-bg: #2a2a4a;
+      --shadow: rgba(0,0,0,0.3);
+      --overlay-bg: rgba(0,0,0,0.6);
+      --nav-logo-border: #1a1a2e;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #fff; color: #333; }
-    a { text-decoration: none; color: #2c3e50; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg-body); color: var(--text); }
+    a { text-decoration: none; color: var(--text); }
     .wrapper { display: flex; height: 100vh; }
     nav {
-      width: 260px; background: #f8f9fa; border-right: 1px solid #e9ecef;
+      width: 260px; background: var(--nav-bg); border-right: 1px solid var(--nav-border);
       overflow-y: auto; flex-shrink: 0; padding: 20px 0;
       transition: transform 0.3s ease; z-index: 100;
     }
-    nav .logo { font-size: 1.2em; font-weight: bold; padding: 0 20px 20px; border-bottom: 1px solid #e9ecef; margin-bottom: 10px; color: #2c3e50; }
+    nav .logo {
+      font-size: 1.2em; font-weight: bold; padding: 0 20px 20px;
+      border-bottom: 1px solid var(--nav-logo-border); margin-bottom: 10px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
     nav ul { list-style: none; padding: 0 10px; }
     nav li { margin: 2px 0; }
     nav details { margin: 5px 0; }
@@ -32,55 +74,59 @@
     }
     nav summary::before { content: '▶ '; font-size: 0.7em; margin-right: 6px; transition: transform 0.2s; }
     nav details[open] > summary::before { transform: rotate(90deg); }
-    nav summary:hover { background: #e9ecef; }
+    nav summary:hover { background: var(--nav-hover); }
     nav a {
       display: block; padding: 6px 12px 6px 32px; border-radius: 4px;
-      font-size: 0.95em; color: #555; transition: background 0.2s;
+      font-size: 0.95em; color: var(--text); transition: background 0.2s;
     }
-    nav a:hover { background: #e9ecef; color: #000; }
-    nav a.active { background: #e2e6ea; font-weight: bold; color: #000; }
+    nav a:hover { background: var(--nav-hover); }
+    nav a.active { background: var(--nav-active); font-weight: bold; }
     .menu-btn {
       display: none; position: fixed; bottom: 20px; left: 20px; z-index: 200;
-      background: #fff; border: 1px solid #ccc; padding: 8px 14px; border-radius: 6px;
-      font-size: 1em; cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      background: var(--nav-bg); border: 1px solid var(--nav-border); padding: 8px 14px; border-radius: 6px;
+      font-size: 1em; cursor: pointer; box-shadow: 0 2px 6px var(--shadow);
     }
     .overlay {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.3); z-index: 90;
+      background: var(--overlay-bg); z-index: 90;
+    }
+    .dark-toggle {
+      background: none; border: 1px solid var(--nav-border); border-radius: 4px;
+      cursor: pointer; font-size: 0.85em; padding: 2px 8px; color: var(--text); line-height: 1.6;
     }
     main {
       flex: 1; padding: 40px; overflow-y: auto; line-height: 1.8;
       max-width: 800px; margin: 0 auto;
       font-size: 20px;
-      background: #fcfcfc;
+      background: var(--bg-main);
     }
     main.loading { opacity: 0.5; transition: opacity 0.2s; }
     main h1 { font-size: 1.8em; margin-bottom: 0.6em; }
     main h2 { font-size: 1.6em; margin: 1em 0 0.5em; }
     main p { margin-bottom: 1em; }
     main blockquote {
-      border-left: 4px solid #adb5bd; padding: 12px 16px; color: #555;
-      background: #f5f5f5; border-radius: 2px; margin: 1.2em 0;
+      border-left: 4px solid var(--blockquote-border); padding: 12px 16px; color: var(--blockquote-text);
+      background: var(--blockquote-bg); border-radius: 2px; margin: 1.2em 0;
     }
     main blockquote p { margin-bottom: 0; }
-    main hr { border: none; border-top: 1px solid #e0e0e0; margin: 2.5em 0; }
-    main a { color: #1a73e8; text-decoration: underline; }
+    main hr { border: none; border-top: 1px solid var(--hr-color); margin: 2.5em 0; }
+    main a { color: var(--link-color); text-decoration: underline; }
     main ul, main ol { padding-left: 1.5em; margin: 0.8em 0; }
     main li { margin-bottom: 0.4em; }
-    main code { background: #f0f0f0; padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
-    footer { margin-top: 2.5em; color: #999; font-size: 0.85em; border-top: 1px solid #e0e0e0; padding-top: 15px; }
-    .nav-links { display: flex; justify-content: space-between; margin-top: 3em; padding-top: 1.5em; border-top: 1px solid #e0e0e0; }
-    .nav-links a { color: #2c3e50; text-decoration: none; font-size: 0.95em; padding: 8px 14px; border-radius: 4px; transition: background 0.2s; }
-    .nav-links a:hover { background: #e9ecef; }
+    main code { background: var(--code-bg); padding: 2px 6px; border-radius: 3px; font-size: 0.9em; }
+    footer { margin-top: 2.5em; color: var(--footer-text); font-size: 0.85em; border-top: 1px solid var(--hr-color); padding-top: 15px; }
+    .nav-links { display: flex; justify-content: space-between; margin-top: 3em; padding-top: 1.5em; border-top: 1px solid var(--hr-color); }
+    .nav-links a { color: var(--text); text-decoration: none; font-size: 0.95em; padding: 8px 14px; border-radius: 4px; transition: background 0.2s; }
+    .nav-links a:hover { background: var(--nav-hover); }
     .nav-prev { margin-right: auto; }
     .nav-next { margin-left: auto; }
-    body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; }
+    body { -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; transition: background 0.3s, color 0.3s; }
     @media (max-width: 768px) {
       .wrapper { flex-direction: column; }
       nav {
         position: fixed; top: 0; left: 0; height: 100%; width: 260px;
         transform: translateX(-100%);
-        box-shadow: 2px 0 8px rgba(0,0,0,0.1);
+        box-shadow: 2px 0 8px var(--shadow);
       }
       nav.open { transform: translateX(0); }
       .menu-btn { display: block; }
@@ -109,7 +155,7 @@
   <div class="overlay" onclick="toggleMenu()"></div>
   <div class="wrapper">
     <nav id="navbar">
-      <div class="logo">📖 个人作品</div>
+      <div class="logo">📖 个人作品<button class="dark-toggle" onclick="toggleDark()" title="切换暗色模式">🌙</button></div>
       <ul>
         <li><a href="#/README.md" onclick="loadContent('README.md', this)">🏠 首页</a></li>
         <li>
@@ -190,6 +236,43 @@
       overlay.classList.toggle('open');
     }
 
+    // ===== 暗色模式 =====
+    function toggleDark() {
+      document.body.classList.toggle('dark');
+      const isDark = document.body.classList.contains('dark');
+      localStorage.setItem('darkMode', isDark ? '1' : '0');
+      updateDarkBtn();
+    }
+    function updateDarkBtn() {
+      const btn = document.querySelector('.dark-toggle');
+      if (btn) btn.textContent = document.body.classList.contains('dark') ? '☀️' : '🌙';
+    }
+    // 恢复暗色模式偏好
+    if (localStorage.getItem('darkMode') === '1') {
+      document.body.classList.add('dark');
+    }
+
+    // ===== 折叠状态持久化 =====
+    document.querySelectorAll('nav details').forEach(d => {
+      d.addEventListener('toggle', function() {
+        // 保存展开的系列名称
+        const summary = this.querySelector('summary');
+        if (summary) {
+          localStorage.setItem('openSeries', this.open ? summary.textContent.trim() : '');
+        }
+      });
+    });
+    // 恢复上次展开的系列
+    const savedSeries = localStorage.getItem('openSeries');
+    if (savedSeries) {
+      document.querySelectorAll('nav details').forEach(d => {
+        const summary = d.querySelector('summary');
+        if (summary && summary.textContent.trim() === savedSeries) {
+          d.setAttribute('open', '');
+        }
+      });
+    }
+
     document.querySelectorAll('nav a').forEach(link => {
       link.addEventListener('click', function() {
         if (window.innerWidth <= 768) {
@@ -248,7 +331,14 @@
       const link = document.querySelector('nav a[onclick*="' + file + '"]');
       if (link) {
         const details = link.closest('details');
-        if (details) details.setAttribute('open', '');
+        if (details) {
+          details.setAttribute('open', '');
+          // 同步保存到 localStorage
+          const summary = details.querySelector('summary');
+          if (summary) {
+            localStorage.setItem('openSeries', summary.textContent.trim());
+          }
+        }
       }
     }
 
@@ -295,6 +385,7 @@
 
     // 页面加载时检测 hash，如有则加载对应内容
     window.addEventListener('DOMContentLoaded', () => {
+      updateDarkBtn();
       const hash = location.hash.replace(/^#\//, '');
       if (hash) {
         loadContent(hash);
